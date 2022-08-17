@@ -55,6 +55,7 @@ test("test async functions with callbacks", (done) => {
   fetchMsg(cb);
 });
 
+// doesn't work with if other tests needs to use realtimers and defined at top
 describe("with fake timers", () => {
   beforeAll(() => {
     jest.useFakeTimers();
@@ -79,7 +80,7 @@ describe("with fake timers", () => {
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
 
     jest.runAllTimers();
-    
+
     expect(cb).toBeCalled();
     expect(cb).toHaveBeenCalledWith(null, { message: 'completed' });
   })

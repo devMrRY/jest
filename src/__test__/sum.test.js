@@ -1,4 +1,4 @@
-const sum = require('./sum');
+const sum = require('../components/sum');
 
 test("test for sum", () => {
     expect(sum(10,3)).toBe(13);

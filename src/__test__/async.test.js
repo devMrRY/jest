@@ -1,5 +1,5 @@
-// jest.mock('../components/fetch');
-import fetchData from '../components/fetch';
+import fetchData from "../components/fetch";
+jest.mock("../components/fetch"); // it will get hoisted at the top
 
 function fetchMsg(cb) {
   setTimeout(() => {
@@ -8,7 +8,6 @@ function fetchMsg(cb) {
 }
 
 it("test async functions", () => {
-  // fetchData.mockImplementation(() => Promise.resolve({}))
   return fetchData().then((res) => {
     expect(res).toMatchObject(
       expect.objectContaining({
@@ -19,26 +18,25 @@ it("test async functions", () => {
   });
 });
 
-
 test("test async functions with async await", async () => {
   await expect(fetchData()).resolves.toMatchObject(
     expect.objectContaining({
       data: { name: expect.any(String), value: expect.any(Number) },
       message: expect.any(String),
     })
-    );
-  });
-  
-  test("test async functions with rejection", async () => {
+  );
+});
+
+test("test async functions with rejection", async () => {
   expect.assertions(1);
   await expect(fetchData(true)).rejects.toMatchObject(
     expect.objectContaining({
       message: expect.any(String),
     })
-    );
-  });
-  
-  // done function is required to be called before moving to next test case
+  );
+});
+
+// done function is required to be called before moving to next test case
 test("test async functions with callbacks", (done) => {
   function cb(error, data) {
     if (error) {
@@ -59,13 +57,13 @@ test("test async functions with callbacks", (done) => {
 describe("with fake timers", () => {
   beforeAll(() => {
     jest.useFakeTimers();
-    jest.spyOn(global, 'setTimeout');
-  })
+    jest.spyOn(global, "setTimeout");
+  });
 
   afterAll(() => {
     jest.useRealTimers();
     jest.restoreAllMocks();
-  })
+  });
 
   test("test async functions with fake timers", () => {
     fetchData();
@@ -74,7 +72,7 @@ describe("with fake timers", () => {
   });
 
   test("test with callback with fake timer", () => {
-    const cb=jest.fn();
+    const cb = jest.fn();
     fetchMsg(cb);
     expect(setTimeout).toHaveBeenCalledTimes(2);
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
@@ -82,6 +80,6 @@ describe("with fake timers", () => {
     jest.runAllTimers();
 
     expect(cb).toBeCalled();
-    expect(cb).toHaveBeenCalledWith(null, { message: 'completed' });
-  })
-})
+    expect(cb).toHaveBeenCalledWith(null, { message: "completed" });
+  });
+});

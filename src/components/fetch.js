@@ -2,9 +2,9 @@ function fetchData(isfail) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (isfail) {
-        reject({ message: "error occured" });
+        reject({ messsage: "error occured" });
       } else {
-        resolve({ data: { name: "test", value: 1 }, message: "completed" });
+        resolve({ data: { name: "test", value: 1 }, messsage: "completed" });
       }
     }, 1000);
   });

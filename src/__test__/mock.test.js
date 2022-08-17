@@ -1,4 +1,4 @@
-import defaultExport, { fun, foo } from '../components/dummy';
+import defaultExport, { fun, foo } from "../components/dummy";
 import axios from "axios";
 
 function forEach(items, callback) {
@@ -8,17 +8,17 @@ function forEach(items, callback) {
 }
 
 const mockFn = jest.fn((x) => 10 + x);
-jest.mock('axios');
+jest.mock("axios");
 
 jest.mock("../components/dummy", () => {
-  const originalModule = jest.requireActual('../components/dummy');
+  const originalModule = jest.requireActual("../components/dummy");
   return {
     __esModule: true,
     ...originalModule,
-    default: jest.fn(() => 'mocked dummy'),
-    foo: () => 'mocked foo',
-  }
-})
+    default: jest.fn(() => "mocked dummy"),
+    foo: () => "mocked foo",
+  };
+});
 
 test("testing forEach", () => {
   forEach([1, 2, 3], mockFn);
@@ -54,25 +54,50 @@ test("testing mocked axios", () => {
 describe("testing partials", () => {
   test("partials test", () => {
     const defaultExportResult = defaultExport();
-    expect(defaultExportResult).toBe('mocked dummy');
-    expect(foo()).toBe('mocked foo');
-    expect(fun).toBe('fun');
-  })
-})
+    expect(defaultExportResult).toBe("mocked dummy");
+    expect(foo()).toBe("mocked foo");
+    expect(fun).toBe("fun");
+  });
+});
 
 describe("mock implementation", () => {
-  jest.mock('../components/sum');
-  const sum = require('../components/sum');
-  sum.mockImplementation(() => 'rahul');
+  jest.mock("../components/sum");
+  const sum = require("../components/sum");
+  sum.mockImplementation(() => "rahul");
 
   test("mocked implementation test", () => {
-    expect(sum()).toBe('rahul');
-  })
+    expect(sum()).toBe("rahul");
+  });
 
   test("mock implementationOnce", () => {
-    const demo = jest.fn(() => 'ts').mockImplementationOnce(() => 32).mockImplementationOnce(() => 12).mockName('mockImplOnce');
-    [32,12,'ts'].forEach((item) => {
+    const demo = jest
+      .fn(() => "ts")
+      .mockImplementationOnce(() => 32)
+      .mockImplementationOnce(() => 12)
+      .mockName("mockImplOnce");
+    [32, 12, "ts"].forEach((item) => {
       expect(demo()).toBe(item);
     });
-  })
-})
+  });
+});
+
+jest.mock("fs");  // required to explicitly jest.mock for core node_modules
+
+describe("listFilesInDirectorySync", () => {
+  const MOCK_FILE_INFO = {
+    "/path/to/file1.js": 'console.log("file1 contents");',
+    "/path/to/file2.txt": "file2 contents",
+  };
+
+  beforeEach(() => {
+    // Set up some mocked out file info before each test
+    require("fs").__setMockFiles(MOCK_FILE_INFO);
+  });
+
+  test("includes all files in the directory in the summary", () => {
+    const FileSummarizer = require("../components/fileSummarize");
+    const fileSummary =
+      FileSummarizer.summarizeFilesInDirectorySync("/path/to");
+    expect(fileSummary.length).toBe(2);
+  });
+});

@@ -1,13 +1,19 @@
-import SoundPlayer, { mockplaySound } from "../components/sound-player";
+import SoundPlayer from "../components/sound-player";
 import SoundPlayerConsumer from "../components/sound-player-consumer";
-jest.mock("../components/sound-player");
+
+const mockPlaySound = jest.fn();
+jest.mock("../components/sound-player", () => {
+    return jest.fn().mockImplementation(() => {
+        return { playSoundFile: mockPlaySound}
+    })
+});
 
 beforeAll(() => {
     SoundPlayer.mockClear();
-    mockplaySound.mockClear();
+    mockPlaySound.mockClear();
 })
 
-describe("test manual mock class", () => {
+describe("test module factory mock class", () => {
     test("sound-player-consumer class instantiation", () => {
         expect(SoundPlayer).not.toBeCalled();
         let soundCons = new SoundPlayerConsumer();
@@ -16,6 +22,6 @@ describe("test manual mock class", () => {
         soundCons.playSomethingCool();   // mock functions which always return undefined;
         // mock functions don't use the body of actual functions
 
-        expect(mockplaySound).toHaveBeenCalledTimes(1);
+        expect(mockPlaySound).toHaveBeenCalledTimes(1);
     })
 })

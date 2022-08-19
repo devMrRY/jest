@@ -1,9 +1,10 @@
-import SoundPlayer from "../components/sound-player";
+import SoundPlayer, { mockplaySound } from "../components/sound-player";
 import SoundPlayerConsumer from "../components/sound-player-consumer";
 jest.mock("../components/sound-player");
 
 beforeAll(() => {
     SoundPlayer.mockClear();
+    mockplaySound.mockClear();
 })
 
 describe("test automatic mock class", () => {
@@ -15,6 +16,6 @@ describe("test automatic mock class", () => {
         soundCons.playSomethingCool();   // mock functions which always return undefined;
         // mock functions don't use the body of actual functions
 
-        expect(SoundPlayer.mock.instances[0].playSoundFile).toHaveBeenCalledTimes(1);
+        expect(mockplaySound).toHaveBeenCalledTimes(1);
     })
 })

@@ -7,7 +7,7 @@ beforeAll(() => {
   SoundPlayer.mockClear();
 });
 
-describe.skip("test run time mock class", () => {
+describe("test run time mock class", () => {
   const mockPlaySound = jest.fn();
   beforeAll(() => {
     mockPlaySound.mockClear();
@@ -18,7 +18,7 @@ describe.skip("test run time mock class", () => {
   afterAll(() => {
     mockPlaySound.mockClear();
   });
-  test("sound-player-consumer class instantiation", () => {
+  test.only("sound-player-consumer class instantiation", () => {
     expect(SoundPlayer).not.toBeCalled();
     let soundCons = new SoundPlayerConsumer();
     expect(SoundPlayer).toHaveBeenCalledTimes(1);
@@ -30,28 +30,28 @@ describe.skip("test run time mock class", () => {
   });
 });
 
-describe("mocking subset of class", () => {
-  const mockedFn = jest
-    .spyOn(SoundPlayer.prototype, "playSoundFile")
-    .mockImplementation(function foo() {
-      console.log("mock implemented function");
-    })
-    .mockName("mockedFn");
+describe.skip("mocking subset of class", () => {
+//   const mockedFn = jest
+//     .spyOn(SoundPlayer.prototype, "playSoundFile")
+//     .mockImplementation(function foo() {
+//       console.log("mock implemented function");
+//     })
+//     .mockName("mockedFn");
 
-  const staticMock = jest
-    .spyOn(SoundPlayer, "brand")
-    .mockImplementation(() => "staticMock called");
-  const getterMock = jest
-    .spyOn(SoundPlayer.prototype, "foo", "get")
-    .mockImplementation(() => "getterMock called");
+//   const staticMock = jest
+//     .spyOn(SoundPlayer, "brand")
+//     .mockImplementation(() => "staticMock called");
+//   const getterMock = jest
+//     .spyOn(SoundPlayer.prototype, "foo", "get")
+//     .mockImplementation(() => "getterMock called");
 
-  test("mocking specific function of class", () => {
-    const player = new SoundPlayerConsumer();
-    player.playSomethingCool();
-    expect(mockedFn).toHaveBeenCalledTimes(1);
-  });
+//   test("mocking specific function of class", () => {
+//     const player = new SoundPlayerConsumer();
+//     player.playSomethingCool();
+//     expect(mockedFn).toHaveBeenCalledTimes(1);
+//   });
 
-  test("mocking static and get methods", () => {
+  test.skip("mocking static and get methods", () => {
     const player=new SoundPlayer();
     player.foo;
     SoundPlayer.brand();

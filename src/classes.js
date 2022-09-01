@@ -1,23 +1,23 @@
+// private variables
+// private class
+// restricted methods and properties
+
+// public methods
 class Person{
-    #detail='details of rahul'
-    constructor(firstName, lastName){
-        let title='person';
-        this.firstName=firstName;
-        this.lastName=lastName;
-    }
-
-    getFullName(){
-        return this.firstName +' '+this.lastName;
-    }
-
-    getDetails(){
-        return this.#detail
+    alive=true;
+    constructor(name){
+        this.name=name;
     }
 }
 
-class Emp extends Person{
-
+class Player extends Person{
+    constructor(name){
+        super(name);
+        this.score=0;
+    }
 }
-let p=new Person('rahul', 'yadav');
-let e=new Emp('test', 'west');
-console.log(p, e.getFullName(), e.getDetails());
+
+const p1=new Person('test');
+const p=new Player('rahul');
+console.log(p1.name)
+console.log(p.name, p.alive)

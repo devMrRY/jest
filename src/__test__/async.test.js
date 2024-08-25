@@ -8,7 +8,7 @@ function fetchMsg(cb) {
 }
 
 it("test async functions", () => {
-  return fetchData().then((res) => {
+  fetchData().then((res) => {
     expect(res).toMatchObject(
       expect.objectContaining({
         data: { name: expect.any(String), value: expect.any(Number) },
@@ -43,12 +43,8 @@ test("test async functions with callbacks", (done) => {
       done(error);
       return;
     }
-    try {
-      expect(data).toEqual({ message: "completed" });
-      done();
-    } catch (error) {
-      done(error);
-    }
+    expect(data).toEqual({ message: "completed" });
+    done();
   }
   fetchMsg(cb);
 });
@@ -56,6 +52,8 @@ test("test async functions with callbacks", (done) => {
 // doesn't work with if other tests needs to use realtimers and defined at top
 describe("with fake timers", () => {
   beforeAll(() => {
+    /* It allows us to control the native behaviour of setTimeout, setInterval 
+    etc and manipulate them like fastforwarding, skipping. */
     jest.useFakeTimers();
     jest.spyOn(global, "setTimeout");
   });
@@ -77,6 +75,9 @@ describe("with fake timers", () => {
     expect(setTimeout).toHaveBeenCalledTimes(2);
     expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
 
+    expect(cb).not.toBeCalled();
+
+    // fast forward the timers to ensure all the times have been called without waiting for the provided time.
     jest.runAllTimers();
 
     expect(cb).toBeCalled();

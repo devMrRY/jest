@@ -34,8 +34,7 @@ describe("outer describe", () => {
     // obj.push("test js", "namastey sanatan");
   });
   afterEach(() => {
-    console.log("after each inner");
-    console.log(obj);
+    console.log("after each inner", obj);
   });
   afterAll(() => {
     console.log("after all inner");
@@ -43,6 +42,7 @@ describe("outer describe", () => {
   });
 
   test("outer test", () => {
+    console.log("outer test");
     expect(obj).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -55,7 +55,7 @@ describe("outer describe", () => {
   describe("inner describe", () => {
     console.log("inner describe");
     test("inner test", () => {
-      console.log(obj);
+      console.log("inner test", obj);
       obj = obj.map((item) => {
         let o = { headline: item.title };
         delete item.title;
@@ -73,8 +73,10 @@ describe("outer describe", () => {
 });
 
 describe("last describe", () => {
+  console.log("last describe");
   beforeEach(() => (obj = { name: "test" }));
   test("last test", () => {
+    console.log("last test");
     expect(obj).toMatchObject(
       expect.objectContaining({
         name: expect.any(String),
